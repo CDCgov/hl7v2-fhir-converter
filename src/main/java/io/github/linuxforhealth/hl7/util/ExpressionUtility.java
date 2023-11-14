@@ -5,12 +5,8 @@
  */
 package io.github.linuxforhealth.hl7.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -61,7 +57,7 @@ public class ExpressionUtility {
             localContext.put(Constants.NULL_VAR_NAME, new EmptyEvaluationResult());
             // initialize the map and list to collect values
             List<ResourceValue> additionalResolveValues = new ArrayList<>();
-            Map<String, Object> resolveValues = new HashMap<>();
+            Map<String, Object> resolveValues = new TreeMap<>();
 
             for (Entry<String, Expression> entry : expressionMap.entrySet()) {
 
@@ -122,9 +118,12 @@ public class ExpressionUtility {
     }
 
     private static String getKeyName(String key, String suffix) {
+        boolean hasLeadingUnderscore = StringUtils.startsWith(key, "_");
         String[] keyComponents = StringUtils.split(key, "_", 2);
         if (keyComponents.length == 2 && KEY_NAME_SUFFIX.equalsIgnoreCase(keyComponents[1])) {
             return keyComponents[0] + suffix;
+        } else if(hasLeadingUnderscore) {
+            return "_" + keyComponents[0];
         } else {
             return keyComponents[0];
         }

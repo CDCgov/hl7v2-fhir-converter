@@ -1,9 +1,7 @@
 package io.github.linuxforhealth.hl7.resource;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import io.github.linuxforhealth.api.ResourceValue;
 
 public class ResourceEvaluationResult {
@@ -28,7 +26,7 @@ public class ResourceEvaluationResult {
       List<ResourceValue> additionalResolveValues, PendingExpressionState pendingExpressions) {
     this.additionalResolveValues = new ArrayList<>();
     this.additionalResolveValues.addAll(additionalResolveValues);
-    this.resolveValues = new HashMap<>();
+    this.resolveValues = new TreeMap<>();
     this.resolveValues.putAll(resolveValues);
     this.pendingExpressions = pendingExpressions;
   }
