@@ -123,6 +123,7 @@ public class SupportedSegments {
 		supportedSegment.add("PRB");
 		supportedSegment.add("PRC");
 		supportedSegment.add("PRD");
+		supportedSegment.add("PRT");
 		supportedSegment.add("PSG");
 		supportedSegment.add("PSH");
 		supportedSegment.add("PSL");

@@ -97,8 +97,8 @@ test {
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
     reports {
-        xml.enabled false
-        csv.enabled false
+        xml.required = false
+        csv.required = false
         html.destination file("${buildDir}/jacocoHtml")
     }
 }
@@ -119,13 +119,13 @@ publishing {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
 
 javadoc.failOnError = false
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
     from javadoc.destinationDir
     javadoc.options.addStringOption('noindex', '-quiet')
 }
@@ -139,12 +139,8 @@ publishing {
     publications {
         mavenPublication(MavenPublication) {
             from components.java
-            artifact sourcesJar {
-                classifier "sources"
-            }
-            artifact javadocJar {
-                classifier "javadoc"
-            }
+            artifact sourcesJar
+            artifact javadocJar
             groupId = group
             artifactId 'hl7v2-fhir-converter'
             version = version
