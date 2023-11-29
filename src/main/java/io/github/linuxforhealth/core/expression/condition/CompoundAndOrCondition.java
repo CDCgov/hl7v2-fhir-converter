@@ -19,8 +19,6 @@ public class CompoundAndOrCondition implements Condition {
     private final String conditionStatement;
 
     public CompoundAndOrCondition(String conditionStatement) {
-//        Preconditions.checkArgument(conditions != null && !conditions.isEmpty(),
-//                "conditions cannot be null or empty");
         this.conditionStatement = conditionStatement;
     }
 
