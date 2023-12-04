@@ -47,7 +47,9 @@ public class ConditionUtil {
   private static Condition createSimpleCondition(String conditionString, boolean useGroup) {
     StringTokenizer stk = new StringTokenizer(conditionString);
     stk.setQuoteChar('\'');
-    if (stk.getTokenList().size() == 2) {
+    if(stk.getTokenList().size() == 1) {
+      return new SimpleBooleanCondition(stk.nextToken());
+    } else if (stk.getTokenList().size() == 2) {
       String var1 = stk.nextToken();
       String var2 = stk.nextToken();
 

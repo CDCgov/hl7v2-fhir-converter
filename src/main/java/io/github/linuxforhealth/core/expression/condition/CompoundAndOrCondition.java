@@ -24,35 +24,58 @@ public class CompoundAndOrCondition implements Condition {
 
     @Override
     public boolean test(Map<String, EvaluationResult> contextVariables) {
-        String updatedString = conditionStatement.toLowerCase();
-        // order is important here for the null replacements
-        updatedString = updatedString.replaceAll("\\snull", "== null");
-        updatedString = updatedString.replaceAll("not_null", "!= null");
-        updatedString = updatedString.replaceAll("equals", "==");
-        updatedString = updatedString.replaceAll("not_equals", "!=");
-        for(String currentContextVariables: contextVariables.keySet()) {
-            String currentValue = contextVariables.get(currentContextVariables).getValue();
-            if(!currentValue.equals("null")) {
-                updatedString = updatedString.replaceAll("\\$" + currentContextVariables, currentValue);
+        return Boolean.parseBoolean(makeRecursive(conditionStatement, contextVariables));
+    }
+
+    private String makeRecursive(String conditionStatementContainer, Map<String, EvaluationResult> contextVariables) {
+        // will not handle nested parens
+        Pattern pattern = Pattern.compile("\\(.*?\\)");
+        Matcher matcher = pattern.matcher(conditionStatementContainer);
+
+        while (matcher.find()) {
+            String group = matcher.group();
+            conditionStatementContainer = eval(conditionStatementContainer, group, contextVariables);
+        }
+
+        while(conditionStatementContainer.contains("&&") || conditionStatementContainer.contains("||")) {
+            if(conditionStatementContainer.contains("&&") && conditionStatementContainer.contains("||") && !conditionStatementContainer.contains("(")) {
+                conditionStatementContainer = fixParens(conditionStatementContainer);
+                conditionStatementContainer = makeRecursive(conditionStatementContainer, contextVariables);
             } else {
-                updatedString = updatedString.replaceAll("\\$" + currentContextVariables, currentValue);
+                conditionStatementContainer = eval(conditionStatementContainer, conditionStatementContainer, contextVariables);
             }
-
         }
 
-        Pattern pattern = Pattern.compile("\\b[^null\\s]\\w+");
-        Matcher matcher = pattern.matcher(updatedString);
-        updatedString = matcher.replaceAll(matchResult -> "'" + matchResult.group() + "'");
+        return conditionStatementContainer;
+    }
 
-        ScriptEngineManager sem = new ScriptEngineManager();
-        ScriptEngine se = sem.getEngineByName("JavaScript");
-        boolean result;
-        try {
-            result = (Boolean) se.eval(updatedString);
-        } catch (ScriptException e) {
-            throw new RuntimeException("Could not evaluate condition: " + conditionStatement);
+    private String fixParens(String conditionStatement) {
+        int orIndex = conditionStatement.indexOf("||");
+        int andIndex = conditionStatement.indexOf("&&");
+        if(orIndex > andIndex) {
+            conditionStatement = "(" + conditionStatement.substring(0, orIndex-2) + ") " + conditionStatement.substring(orIndex, conditionStatement.length());
+        } else {
+            conditionStatement = conditionStatement.substring(0, orIndex+2) + " (" + conditionStatement.substring(orIndex+2, conditionStatement.length()) + ")";
+        }
+        return conditionStatement;
+    }
+
+    private String eval(String conditionStatement, String group, Map<String, EvaluationResult> contextVariables) {
+        boolean goodToGo = false;
+        if(group.contains("||")) {
+            ArrayList<Condition> orString = new ArrayList<>();
+            orString.add(ConditionUtil.createCondition(group.replaceAll("\\(", "").replaceAll("\\)", "")));
+            CompoundORCondition compoundORCondition = new CompoundORCondition(orString);
+            goodToGo = compoundORCondition.test(contextVariables);
+            conditionStatement = conditionStatement.replace(group, Boolean.toString(goodToGo));
+        } else if(group.contains("&&")) {
+            ArrayList<Condition> andString = new ArrayList<>();
+            andString.add(ConditionUtil.createCondition(group.replaceAll("\\(", "").replaceAll("\\)", "")));
+            CompoundAndCondition compoundAndCondition = new CompoundAndCondition(andString);
+            goodToGo = compoundAndCondition.test(contextVariables);
+            conditionStatement = conditionStatement.replace(group, Boolean.toString(goodToGo));
         }
 
-        return result;
+        return conditionStatement;
     }
 }
