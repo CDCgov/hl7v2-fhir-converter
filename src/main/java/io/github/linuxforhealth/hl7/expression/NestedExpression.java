@@ -5,11 +5,7 @@
  */
 package io.github.linuxforhealth.hl7.expression;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import org.slf4j.Logger;
@@ -40,8 +36,11 @@ public class NestedExpression extends AbstractExpression {
 
   public NestedExpression(ExpressionAttributes attr) {
     super(attr);
-    this.childexpressions = new HashMap<>();
     if (attr.getExpressions() != null) {
+      // Use a TreeMap here since it implements the SortedMap interface
+      // to guarantee that the keys can be accessed in the order the array is
+      // in the schema
+      this.childexpressions = new TreeMap<>();
       int index = 0;
       for (ExpressionAttributes nestedattrs : attr.getExpressions()) {
         Expression e = HL7DataBasedResourceDeserializer.generateExpression(nestedattrs);
@@ -53,7 +52,7 @@ public class NestedExpression extends AbstractExpression {
 
       this.generateMap = false;
     } else if (attr.getExpressionsMap() != null) {
-
+      this.childexpressions = new HashMap<>();
       for (Entry<String, ExpressionAttributes> nestedattrs : attr.getExpressionsMap().entrySet()) {
         Expression e = HL7DataBasedResourceDeserializer.generateExpression(nestedattrs.getValue());
         if (e != null) {
