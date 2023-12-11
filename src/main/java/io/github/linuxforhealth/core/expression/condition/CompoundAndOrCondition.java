@@ -134,7 +134,5 @@ public class CompoundAndOrCondition implements Condition {
             LOGGER.error("Could not access the constructor method for class " + conditionClass);
             return "false";
         }
-
-        return  conditionStatementContainer;
     }
 }
