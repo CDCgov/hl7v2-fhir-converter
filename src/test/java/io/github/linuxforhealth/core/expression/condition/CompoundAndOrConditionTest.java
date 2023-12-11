@@ -32,6 +32,25 @@ public class CompoundAndOrConditionTest {
 
     @Test
     void compound_condition_2() {
+        String condition = "$var1 EQUALS abc && $var2 EQUALS xyz || $var1 NOT_NULL";
+        CompoundAndOrCondition simplecondition = (CompoundAndOrCondition) ConditionUtil.createCondition(condition);
+
+        Map<String, EvaluationResult> contextVariables = new HashMap<>();
+        contextVariables.put("var1", new SimpleEvaluationResult<>("abc"));
+        contextVariables.put("var2", new SimpleEvaluationResult<>("xyz"));
+        assertThat(simplecondition.test(contextVariables)).isTrue();
+
+        contextVariables.put("var1", new SimpleEvaluationResult<>("cba"));
+        contextVariables.put("var2", new SimpleEvaluationResult<>("xyz"));
+        assertThat(simplecondition.test(contextVariables)).isTrue();
+
+        contextVariables.put("var1", new SimpleEvaluationResult<>("null"));
+        contextVariables.put("var2", new SimpleEvaluationResult<>("zyx"));
+        assertThat(simplecondition.test(contextVariables)).isFalse();
+    }
+
+    @Test
+    void compound_condition_3() {
         String condition = "($var1 EQUALS abc || $var2 EQUALS xyz) && $var1 NOT_NULL";
         CompoundAndOrCondition simplecondition = (CompoundAndOrCondition) ConditionUtil.createCondition(condition);
 
@@ -50,7 +69,7 @@ public class CompoundAndOrConditionTest {
     }
 
     @Test
-    void compound_condition_3() {
+    void compound_condition_4() {
         String condition = "$var1 EQUALS abc || ($var2 EQUALS xyz && $var1 NOT_NULL) && ($var2 EQUALS $var3 || $var1 EQUALS $var3)";
         CompoundAndOrCondition simplecondition = (CompoundAndOrCondition) ConditionUtil.createCondition(condition);
 
@@ -77,7 +96,7 @@ public class CompoundAndOrConditionTest {
     }
 
     @Test
-    void compound_condition_4() {
+    void compound_condition_5() {
         String condition = "$var1 EQUALS abc || ($var2 EQUALS xyz && $var1 NOT_NULL) || ($var2 EQUALS $var3 || $var1 EQUALS $var3)";
         CompoundAndOrCondition simplecondition = (CompoundAndOrCondition) ConditionUtil.createCondition(condition);
 
