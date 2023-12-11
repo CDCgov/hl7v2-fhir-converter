@@ -2,13 +2,18 @@ package io.github.linuxforhealth.core.expression.condition;
 
 import io.github.linuxforhealth.api.Condition;
 import io.github.linuxforhealth.api.EvaluationResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CompoundAndOrCondition implements Condition {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompoundAndOrCondition.class);
     private final String conditionStatement;
     private static final Pattern pattern = Pattern.compile("\\(.*?\\)");
 
@@ -86,21 +91,50 @@ public class CompoundAndOrCondition implements Condition {
      * @return returns the current state of the ConditionStatement
      */
     private String eval(String conditionStatementContainer, String group, Map<String, EvaluationResult> contextVariables) {
-        boolean goodToGo;
         if(group.contains("||")) {
-            ArrayList<Condition> orString = new ArrayList<>();
-            orString.add(ConditionUtil.createCondition(group.replaceAll("\\(", "").replaceAll("\\)", "")));
-            CompoundORCondition compoundORCondition = new CompoundORCondition(orString);
-            goodToGo = compoundORCondition.test(contextVariables);
-            conditionStatementContainer = conditionStatementContainer.replace(group, Boolean.toString(goodToGo));
+            conditionStatementContainer = cleanupAndTest(group, contextVariables, conditionStatementContainer,
+                    CompoundORCondition.class);
         } else if(group.contains("&&")) {
-            ArrayList<Condition> andString = new ArrayList<>();
-            andString.add(ConditionUtil.createCondition(group.replaceAll("\\(", "").replaceAll("\\)", "")));
-            CompoundAndCondition compoundAndCondition = new CompoundAndCondition(andString);
-            goodToGo = compoundAndCondition.test(contextVariables);
-            conditionStatementContainer = conditionStatementContainer.replace(group, Boolean.toString(goodToGo));
+            conditionStatementContainer = cleanupAndTest(group, contextVariables, conditionStatementContainer,
+                    CompoundAndCondition.class);
         }
 
         return conditionStatementContainer;
+    }
+
+    /**
+     * Removes the parens so that we can evaluate either the "AND" or "OR" condition.
+     * Will return false if an exception is thrown since otherwise the code will go on infinitely.
+     * @param group - Holds the current expression to be evaluated
+     * @param contextVariables - The names and values of any variables that may exist within the conditionStatement
+     * @param conditionStatementContainer - Holds the current state of the conditionStatement
+     * @param conditionClass - The class (ComoundAndCondition or CompoundOrCondition) to call the test method on.
+     * @return returns the current state of the ConditionStatement
+     */
+    private String cleanupAndTest(String group, Map<String, EvaluationResult> contextVariables,
+                                  String conditionStatementContainer, Class<?> conditionClass) {
+        boolean goodToGo;
+        ArrayList<Condition> expressionString = new ArrayList<>();
+        expressionString.add(ConditionUtil.createCondition(group.replaceAll("\\(", "").replaceAll("\\)", "")));
+
+        try {
+            Condition compoundCondition = (Condition) conditionClass.getDeclaredConstructor(List.class).newInstance(expressionString);
+            goodToGo = compoundCondition.test(contextVariables);
+            return conditionStatementContainer.replace(group, Boolean.toString(goodToGo));
+        } catch (NoSuchMethodException e) {
+            LOGGER.error("Could not find the constructor method for class " + conditionClass);
+            return "false";
+        } catch(InvocationTargetException e) {
+            LOGGER.error("Could not find the invoke the constructor method for class " + conditionClass);
+            return "false";
+        } catch(InstantiationException e) {
+            LOGGER.error("Could not find the instantiate class " + conditionClass);
+            return "false";
+        } catch (IllegalAccessException e) {
+            LOGGER.error("Could not access the constructor method for class " + conditionClass);
+            return "false";
+        }
+
+        return  conditionStatementContainer;
     }
 }
