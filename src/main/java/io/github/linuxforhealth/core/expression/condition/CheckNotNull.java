@@ -31,7 +31,7 @@ public class CheckNotNull implements Condition {
     EvaluationResult variable1 = ContextValueUtils.getVariableValuesFromVariableContextMap(var1,
         contextVariables, false, VariableUtils.isFuzzyMatch(var1));
     
-    return variable1 != null && !variable1.isEmpty();
+    return variable1 != null && !variable1.isEmpty() && !variable1.getValue().equals("null");
   }
 
 

@@ -296,7 +296,7 @@ Variables are scoped to the resource expression they are created in and all chil
 #### Condition
 Conditions evaluate to true or false.<br>
 Engine supports the following condition types:
-* Null check,  example: ``condition: $var1 NULL``
+* Null check,  example: ``condition: $var1 NULL``. However, any null in the statement will be treated as null. 
 * Not null check, example: ``condition: $var1 NOT_NULL``
 * Simple condition,  example: ``condition: $obx2 EQUALS DR``
 * Conditions with AND,   example: ``condition: $obx2 EQUALS SN && $obx5.3 EQUALS ':'``
