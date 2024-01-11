@@ -33,6 +33,7 @@ import ca.uhn.hl7v2.model.Varies;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.fhir.ucum.Value;
 import org.hl7.fhir.dstu3.model.codesystems.MedicationRequestCategory;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.AllergyIntolerance;
@@ -432,6 +433,11 @@ public class SimpleDataValueResolver {
             return new SimpleCode(val, null, null);
         } else
             return null;
+    };
+
+    public static final ValueExtractor<Object, String> ENCOUNTER_STATUS_CODE_FHIR = (Object value) -> {
+        String val = Hl7DataHandlerUtil.getStringValue(value);
+        return getFHIRCode(val, EncounterStatus.class);
     };
 
     public static final ValueExtractor<Object, String> SPECIMEN_STATUS_CODE_FHIR = (Object value) -> {
