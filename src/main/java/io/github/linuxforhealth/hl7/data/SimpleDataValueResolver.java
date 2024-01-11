@@ -31,6 +31,7 @@ import ca.uhn.hl7v2.model.Varies;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.fhir.ucum.Value;
 import org.hl7.fhir.dstu3.model.codesystems.MedicationRequestCategory;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory;
@@ -41,18 +42,7 @@ import org.hl7.fhir.r4.model.MedicationRequest;
 import org.hl7.fhir.r4.model.Observation.ObservationStatus;
 import org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus;
 import org.hl7.fhir.r4.model.Specimen.SpecimenStatus;
-import org.hl7.fhir.r4.model.codesystems.V3ActCode;
-import org.hl7.fhir.r4.model.codesystems.V3MaritalStatus;
-import org.hl7.fhir.r4.model.codesystems.ConditionCategory;
-import org.hl7.fhir.r4.model.codesystems.MessageReasonEncounter;
-import org.hl7.fhir.r4.model.codesystems.NameUse;
-import org.hl7.fhir.r4.model.codesystems.SubscriberRelationship;
-import org.hl7.fhir.r4.model.codesystems.V3ReligiousAffiliation;
-import org.hl7.fhir.r4.model.codesystems.V3RoleCode;
-import org.hl7.fhir.r4.model.codesystems.DiagnosisRole;
-import org.hl7.fhir.r4.model.codesystems.ConditionClinical;
-import org.hl7.fhir.r4.model.codesystems.ConditionVerStatus;
-import org.hl7.fhir.r4.model.codesystems.CompositionStatus;
+import org.hl7.fhir.r4.model.codesystems.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -418,6 +408,11 @@ public class SimpleDataValueResolver {
             return new SimpleCode(val, null, null);
         } else
             return null;
+    };
+
+    public static final ValueExtractor<Object, String> ENCOUNTER_STATUS_CODE_FHIR = (Object value) -> {
+        String val = Hl7DataHandlerUtil.getStringValue(value);
+        return getFHIRCode(val, EncounterStatus.class);
     };
 
     public static final ValueExtractor<Object, String> SPECIMEN_STATUS_CODE_FHIR = (Object value) -> {
