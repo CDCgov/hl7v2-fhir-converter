@@ -556,3 +556,14 @@ RelatedPersonNeededIN272:
   17: TRUE # Minor dependent of a minor dependant input (grandchild dependent) : Grandparent
   18: TRUE # Parent : Child 
   19: TRUE # Grandparent : Grandchild 
+
+EncounterStatus:
+  E: in-progress
+  I: in-progress
+  O: in-progress
+  P: planned
+  R: in-progress
+  B: in-progress
+  C: in-progress
+  N: in-progress
+  U: unknown
