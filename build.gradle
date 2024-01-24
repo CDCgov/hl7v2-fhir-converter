@@ -51,7 +51,7 @@ implementation group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-validation-resources-
 implementation group: 'org.thymeleaf', name: 'thymeleaf', version: '3.1.2.RELEASE'
 
 implementation group: 'org.apache.commons', name: 'commons-jexl3', version: '3.1'
-implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.8.0'
+implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.9.0'
 // https://mvnrepository.com/artifact/org.apache.commons/commons-configuration2
 implementation group: 'org.apache.commons', name: 'commons-configuration2', version: '2.8.0'
 // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
