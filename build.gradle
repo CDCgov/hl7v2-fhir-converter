@@ -18,7 +18,7 @@ version = (findProperty('version') == 'unspecified') ? '1.0.1-SNAPSHOT' : versio
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 sourceCompatibility = 11
-targetCompatibility = 11
+targetCompatibility = 17
 
 dependencies {
 // This dependency is exported to consumers, that is to say found on their compile classpath.
