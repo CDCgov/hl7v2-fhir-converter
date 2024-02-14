@@ -71,7 +71,7 @@ public class ConverterConfiguration {
                       .setListDelimiterHandler(new DefaultListDelimiterHandler(',')));
       Configuration config = builder.getConfiguration();
 
-      if (resourceFolder = null) {
+      if (resourceFolder == null) {
         String resourceLoc = config.getString(BASE_PATH_RESOURCE, null);
         if (StringUtils.isNotBlank(resourceLoc)) {
           resourceFolder = resourceLoc;
