@@ -21,6 +21,7 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.configuration2.io.ClasspathLocationStrategy;
 import org.apache.commons.configuration2.io.CombinedLocationStrategy;
 import org.apache.commons.configuration2.io.FileLocationStrategy;
+import org.apache.commons.configuration2.io.HomeDirectoryLocationStrategy;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,20 +46,19 @@ public class ConverterConfiguration {
   private String additionalResourcesLocation;
 
   private ConverterConfiguration() {
-    initializeConfiguration();
+    List<FileLocationStrategy> subs = Arrays.asList(new ConfigDirectoryLocationStrategy(),
+            new ClasspathLocationStrategy());
+    FileLocationStrategy strategy = new CombinedLocationStrategy(subs);
+    initializeConfiguration(strategy);
   }
 
-  public ConverterConfiguration(String resourceFolderPath) {
-    resourceFolder = resourceFolderPath;
-    initializeConfiguration();
+  public ConverterConfiguration(String configFolderPath) {
+    FileLocationStrategy strategy = new HomeDirectoryLocationStrategy(configFolderPath, false);
+    initializeConfiguration(strategy);
   }
 
-  private void initializeConfiguration() {
+  private void initializeConfiguration(FileLocationStrategy strategy) {
     try {
-
-      List<FileLocationStrategy> subs = Arrays.asList(new ConfigDirectoryLocationStrategy(),
-          new ClasspathLocationStrategy());
-      FileLocationStrategy strategy = new CombinedLocationStrategy(subs);
 
       Parameters params = new Parameters();
 
@@ -71,14 +71,12 @@ public class ConverterConfiguration {
                       .setListDelimiterHandler(new DefaultListDelimiterHandler(',')));
       Configuration config = builder.getConfiguration();
 
-      if (resourceFolder == null) {
-        String resourceLoc = config.getString(BASE_PATH_RESOURCE, null);
-        if (StringUtils.isNotBlank(resourceLoc)) {
-          resourceFolder = resourceLoc;
-        } else {
-          resourceFolder = "";
-          resourcefromClassPath = true;
-        }
+      String resourceLoc = config.getString(BASE_PATH_RESOURCE, null);
+      if (StringUtils.isNotBlank(resourceLoc)) {
+        resourceFolder = resourceLoc;
+      } else {
+        resourceFolder = "";
+        resourcefromClassPath = true;
       }
 
       // get list of supported messages, if not found, default to *
