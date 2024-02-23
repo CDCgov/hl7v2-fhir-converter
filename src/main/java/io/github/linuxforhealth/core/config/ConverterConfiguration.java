@@ -101,6 +101,8 @@ public class ConverterConfiguration {
       // get additional resources location
       additionalResourcesLocation = config.getString(ADDITIONAL_RESOURCES_LOCATION, null);
 
+      configuration = this;
+
     } catch (ConfigurationException e) {
       throw new IllegalStateException("Cannot read configuration for resource location", e);
     }
