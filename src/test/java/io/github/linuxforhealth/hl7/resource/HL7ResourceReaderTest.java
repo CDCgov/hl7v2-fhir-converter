@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Properties;
 
+import org.fhir.ucum.Converter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -90,6 +91,30 @@ class HL7ResourceReaderTest {
 
       // Get the templates ORU_R01 will be found in the base path and ADT_A09 will be found in the additional path
       Map<String, HL7MessageModel> messagetemplates = ResourceReader.getInstance().getMessageTemplates();
+      assertThat(messagetemplates).containsKey("ORU_R01"); // found in the base path
+      assertThat(messagetemplates).containsKey("ADT_A09"); // found in the additional path
+    } catch (IllegalArgumentException e) {
+      throw new IllegalStateException("Failure to initialize the templates for the converter.", e);
+    }
+  }
+
+  // This tests that messagetemplates are loaded when providing an inline configuration path
+  @Test
+  void testGetMessageTemplatesViaInlineConfiguration() throws IOException {
+    try {
+      // Set up the config file
+      File configFile = new File(folder, "config.properties");
+      Properties prop = new Properties();
+      prop.put("base.path.resource", "src/main/resources");
+      prop.put("supported.hl7.messages", "*");
+      prop.put("default.zoneid", "+08:00");
+      prop.put("additional.resources.location", "src/test/resources/additional_resources");
+      prop.store(new FileOutputStream(configFile), null);
+
+      // Get the templates ORU_R01 will be found in the base path and ADT_A09 will be found in the additional path
+      ConverterConfiguration config = new ConverterConfiguration(configFile.getParent());
+      ResourceReader reader = new ResourceReader(config);
+      Map<String, HL7MessageModel> messagetemplates = reader.getMessageTemplates();
       assertThat(messagetemplates).containsKey("ORU_R01"); // found in the base path
       assertThat(messagetemplates).containsKey("ADT_A09"); // found in the additional path
     } catch (IllegalArgumentException e) {
