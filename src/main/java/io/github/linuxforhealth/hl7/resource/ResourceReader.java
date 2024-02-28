@@ -51,6 +51,12 @@ public class ResourceReader {
     converterConfig = ConverterConfiguration.getInstance();
   }
 
+  /**
+   * Creates a ResourceReader with the supplied ConverterConfiguration
+   * ResourceReader.getInstance() will return a copy of the most recently constructed object
+   *
+   * @param config The ConverterConfiguration to use
+   */
   public ResourceReader(ConverterConfiguration config) {
     converterConfig = config;
     reader = this;

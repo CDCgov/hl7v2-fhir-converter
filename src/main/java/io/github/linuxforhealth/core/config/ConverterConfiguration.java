@@ -52,6 +52,12 @@ public class ConverterConfiguration {
     initializeConfiguration(strategy);
   }
 
+  /**
+   * Creates a ConverterConfiguration for the specified file path
+   * ConverterConfiguration.getInstance() will return a copy of the most recently constructed object
+   *
+   * @param configFolderPath The location of the configuration file
+   */
   public ConverterConfiguration(String configFolderPath) {
     FileLocationStrategy strategy = new HomeDirectoryLocationStrategy(configFolderPath, false);
     initializeConfiguration(strategy);
