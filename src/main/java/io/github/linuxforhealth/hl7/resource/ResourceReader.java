@@ -45,7 +45,22 @@ public class ResourceReader {
 
   private static ResourceReader reader;
 
-  private final ConverterConfiguration converterConfig = ConverterConfiguration.getInstance();
+  private final ConverterConfiguration converterConfig;
+
+  private ResourceReader() {
+    converterConfig = ConverterConfiguration.getInstance();
+  }
+
+  /**
+   * Creates a ResourceReader with the supplied ConverterConfiguration
+   * ResourceReader.getInstance() will return a copy of the most recently constructed object
+   *
+   * @param config The ConverterConfiguration to use
+   */
+  public ResourceReader(ConverterConfiguration config) {
+    converterConfig = config;
+    reader = this;
+  }
 
   /**
    * Loads a file resource configuration, returning a String
@@ -118,7 +133,7 @@ public class ResourceReader {
    */
   public Map<String, HL7MessageModel> getMessageTemplates() {
     Map<String, HL7MessageModel> messagetemplates = new HashMap<>();
-    List<String> supportedMessageTemplates = ConverterConfiguration.getInstance().getSupportedMessageTemplates();
+    List<String> supportedMessageTemplates = converterConfig.getSupportedMessageTemplates();
     if (hasWildcard(supportedMessageTemplates)) {
       // Code currently assumes we do no use the list of supported messages, once we see an *.
       // In future if needed to merge, it would go here.

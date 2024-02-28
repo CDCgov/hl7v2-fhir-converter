@@ -21,6 +21,7 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.configuration2.io.ClasspathLocationStrategy;
 import org.apache.commons.configuration2.io.CombinedLocationStrategy;
 import org.apache.commons.configuration2.io.FileLocationStrategy;
+import org.apache.commons.configuration2.io.HomeDirectoryLocationStrategy;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,11 +46,25 @@ public class ConverterConfiguration {
   private String additionalResourcesLocation;
 
   private ConverterConfiguration() {
-    try {
+    List<FileLocationStrategy> subs = Arrays.asList(new ConfigDirectoryLocationStrategy(),
+            new ClasspathLocationStrategy());
+    FileLocationStrategy strategy = new CombinedLocationStrategy(subs);
+    initializeConfiguration(strategy);
+  }
 
-      List<FileLocationStrategy> subs = Arrays.asList(new ConfigDirectoryLocationStrategy(),
-          new ClasspathLocationStrategy());
-      FileLocationStrategy strategy = new CombinedLocationStrategy(subs);
+  /**
+   * Creates a ConverterConfiguration for the specified file path
+   * ConverterConfiguration.getInstance() will return a copy of the most recently constructed object
+   *
+   * @param configFolderPath The location of the configuration file
+   */
+  public ConverterConfiguration(String configFolderPath) {
+    FileLocationStrategy strategy = new HomeDirectoryLocationStrategy(configFolderPath, false);
+    initializeConfiguration(strategy);
+  }
+
+  private void initializeConfiguration(FileLocationStrategy strategy) {
+    try {
 
       Parameters params = new Parameters();
 
@@ -91,6 +106,8 @@ public class ConverterConfiguration {
 
       // get additional resources location
       additionalResourcesLocation = config.getString(ADDITIONAL_RESOURCES_LOCATION, null);
+
+      configuration = this;
 
     } catch (ConfigurationException e) {
       throw new IllegalStateException("Cannot read configuration for resource location", e);
