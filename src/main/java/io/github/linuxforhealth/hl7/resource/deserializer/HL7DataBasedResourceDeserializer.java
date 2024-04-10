@@ -32,7 +32,7 @@ public class HL7DataBasedResourceDeserializer extends JsonDeserializer<HL7DataBa
 
   private static final String RESOURCE_TYPE_FIELD_NAME = "resourceType";
   private static final String SPEC = "specs";
-  private static Map<String, Expression> commonExpressions;
+  private Map<String, Expression> commonExpressions;
 
   private static final ObjectMapper MAPPER = ObjectMapperUtil.getYAMLInstance();
   private static final Logger LOGGER = LoggerFactory.getLogger(HL7DataBasedResourceDeserializer.class);
