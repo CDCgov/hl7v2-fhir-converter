@@ -32,24 +32,20 @@ public class HL7DataBasedResourceDeserializer extends JsonDeserializer<HL7DataBa
 
   private static final String RESOURCE_TYPE_FIELD_NAME = "resourceType";
   private static final String SPEC = "specs";
-  private Map<String, Expression> commonExpressions;
-
+  
   private static final ObjectMapper MAPPER = ObjectMapperUtil.getYAMLInstance();
   private static final Logger LOGGER = LoggerFactory.getLogger(HL7DataBasedResourceDeserializer.class);
 
   // Reads the resource/Common.yml and generates expressions from it.
   private static synchronized Map<String, Expression> getCommonExpressions() throws JsonProcessingException {
 
-      if (commonExpressions == null) {
+    // generate the common expressions from the Common YAML file.
+    Map<String, Expression> commonExpressions = new HashMap<>();
+    String path = ResourceReader.getInstance().getResource(Constants.HL7_BASE_PATH + Constants.COMMON_RESOURCE_PATH);
+    JsonNode node = ObjectMapperUtil.getYAMLInstance().readTree(path);
+    Map<String, Expression> expressions = generateExpressions(node);
 
-        // generate the common expressions from the Common YAML file.
-        commonExpressions = new HashMap<>();
-        String path = ResourceReader.getInstance().getResource(Constants.HL7_BASE_PATH + Constants.COMMON_RESOURCE_PATH);
-        JsonNode node = ObjectMapperUtil.getYAMLInstance().readTree(path);
-        Map<String, Expression> expressions = generateExpressions(node);
-
-        commonExpressions.putAll(expressions);
-      }
+    commonExpressions.putAll(expressions);
 
     return commonExpressions;
   }
