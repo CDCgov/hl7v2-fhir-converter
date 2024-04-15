@@ -36,6 +36,13 @@ public interface MessageEngine {
    */
   FHIRContext getFHIRContext();
 
+  /**
+   * Returns whether an exception that occurs during conversion should be logged or logged and rethrown
+   *
+   * @return boolean
+   */
+  boolean getShouldRethrowConversionException();
+
 
   }
 

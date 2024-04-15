@@ -62,6 +62,7 @@ public class HL7MessageEngine implements MessageEngine {
     private static final ObjectMapper OBJ_MAPPER = ObjectMapperUtil.getJSONInstance();
     private FHIRContext context;
     private BundleType bundleType;
+    private boolean shouldRethrowConversionException = false;
 
     /**
      * 
@@ -79,6 +80,12 @@ public class HL7MessageEngine implements MessageEngine {
     public HL7MessageEngine(FHIRContext context, BundleType bundleType) {
         this.context = context;
         this.bundleType = bundleType;
+    }
+
+    public HL7MessageEngine(FHIRContext context, BundleType bundleType, boolean rethrowConversionException) {
+        this.context = context;
+        this.bundleType = bundleType;
+        this.shouldRethrowConversionException = rethrowConversionException;
     }
 
     /**
@@ -348,5 +355,10 @@ public class HL7MessageEngine implements MessageEngine {
     @Override
     public FHIRContext getFHIRContext() {
         return context;
+    }
+
+    @Override
+    public boolean getShouldRethrowConversionException() {
+        return this.shouldRethrowConversionException;
     }
 }

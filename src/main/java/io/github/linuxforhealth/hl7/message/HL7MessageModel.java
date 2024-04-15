@@ -97,6 +97,9 @@ public class HL7MessageModel implements MessageTemplate<Message> {
         } catch (Exception e) {
             // Print stack class and trace without the error message.
             handleException(e);
+            if(engine.getShouldRethrowConversionException()) {
+                throw e;
+            }
         }
 
         return bundle;
