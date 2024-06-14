@@ -32,12 +32,7 @@ public class ConditionUtil {
     StringTokenizer ors = new StringTokenizer(conditionString, "||");
     StringTokenizer ands = new StringTokenizer(conditionString, "&&");
     if(ors.getTokenList().size() > 1 && ands.getTokenList().size()> 1) {
-      CompoundAndCondition andConditions = getListAndConditions(ors, useGroup);
-      CompoundORCondition orConditions = getListOrConditions(ors, useGroup);
-      List<Condition> conditions = new ArrayList<>();
-      conditions.addAll(andConditions.getConditions());
-      conditions.addAll(orConditions.getConditions());
-      return new CompoundAndOrCondition(conditionString, conditions);
+      return createCompoundAndOrCondition(conditionString, useGroup);
     } else if (ors.getTokenList().size() > 1) {
       return getListOrConditions(ors, useGroup);
     } else if (ands.getTokenList().size() > 1) {
@@ -90,6 +85,20 @@ public class ConditionUtil {
       conditions.add(createSimpleCondition(tok, useGroup));
     }
     return new CompoundORCondition(conditions);
+  }
+
+  private static CompoundAndOrCondition createCompoundAndOrCondition(String conditionString, boolean useGroup) {
+    String strippedConditionString = conditionString
+      .replaceAll("\\(", "")
+      .replaceAll("\\)", "");
+    StringTokenizer ors = new StringTokenizer(strippedConditionString, "||");
+    StringTokenizer ands = new StringTokenizer(strippedConditionString, "&&");
+    CompoundAndCondition andConditions = getListAndConditions(ors, useGroup);
+    CompoundORCondition orConditions = getListOrConditions(ors, useGroup);
+    List<Condition> conditions = new ArrayList<>();
+    conditions.addAll(andConditions.getConditions());
+    conditions.addAll(orConditions.getConditions());
+    return new CompoundAndOrCondition(conditionString, conditions);
   }
 
 }
