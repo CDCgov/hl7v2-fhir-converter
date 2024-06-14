@@ -32,7 +32,12 @@ public class ConditionUtil {
     StringTokenizer ors = new StringTokenizer(conditionString, "||");
     StringTokenizer ands = new StringTokenizer(conditionString, "&&");
     if(ors.getTokenList().size() > 1 && ands.getTokenList().size()> 1) {
-      return new CompoundAndOrCondition(conditionString);
+      CompoundAndCondition andConditions = getListAndConditions(ors, useGroup);
+      CompoundORCondition orConditions = getListOrConditions(ors, useGroup);
+      List<Condition> conditions = new ArrayList<>();
+      conditions.addAll(andConditions.getConditions());
+      conditions.addAll(orConditions.getConditions());
+      return new CompoundAndOrCondition(conditionString, conditions);
     } else if (ors.getTokenList().size() > 1) {
       return getListOrConditions(ors, useGroup);
     } else if (ands.getTokenList().size() > 1) {
