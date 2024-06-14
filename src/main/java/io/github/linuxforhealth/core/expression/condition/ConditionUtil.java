@@ -77,7 +77,7 @@ public class ConditionUtil {
   private static CompoundAndCondition getListAndConditions(StringTokenizer ands, boolean useGroup) {
     List<Condition> conditions = new ArrayList<>();
     for (String tok : ands.getTokenList()) {
-      conditions.add();
+      conditions.add(createSimpleCondition(tok, useGroup));
     }
     return new CompoundAndCondition(conditions);
   }
