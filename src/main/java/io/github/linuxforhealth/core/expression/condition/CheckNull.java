@@ -37,6 +37,11 @@ public class CheckNull implements Condition {
     return var1;
   }
 
-
-
+  @Override
+  public String toString() {
+    return "CheckNull{" +
+            "var1='" + var1 + '\'' +
+            ", useGroup=" + useGroup +
+            '}';
+  }
 }

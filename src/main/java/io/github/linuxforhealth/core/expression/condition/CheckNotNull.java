@@ -24,8 +24,6 @@ public class CheckNotNull implements Condition {
 
   }
 
-
-
   @Override
   public boolean test(Map<String, EvaluationResult> contextVariables) {
     EvaluationResult variable1 = ContextValueUtils.getVariableValuesFromVariableContextMap(var1,
@@ -34,12 +32,15 @@ public class CheckNotNull implements Condition {
     return variable1 != null && !variable1.isEmpty() && !variable1.getValue().equals("null");
   }
 
-
-
   public String getVar1() {
     return var1;
   }
 
-
-
+  @Override
+  public String toString() {
+    return "CheckNotNull{" +
+            "var1='" + var1 + '\'' +
+            ", useGroup=" + useGroup +
+            '}';
+  }
 }

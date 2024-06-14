@@ -16,14 +16,11 @@ public class CompoundAndCondition implements Condition {
 
   private List<Condition> conditions;
 
-
   public CompoundAndCondition(List<Condition> conditions) {
     Preconditions.checkArgument(conditions != null && !conditions.isEmpty(),
         "conditions cannot be null or empty");
     this.conditions = conditions;
   }
-
-
 
   @Override
   public boolean test(Map<String, EvaluationResult> contextVariables) {
@@ -35,13 +32,15 @@ public class CompoundAndCondition implements Condition {
     return true;
   }
 
-
-
   public List<Condition> getConditions() {
     return new ArrayList<>(conditions);
   }
 
-
-
+  @Override
+  public String toString() {
+    return "CompoundAndCondition{" +
+            "conditions=" + conditions +
+            '}';
+  }
 
 }
