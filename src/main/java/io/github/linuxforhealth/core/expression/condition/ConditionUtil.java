@@ -96,14 +96,10 @@ public class ConditionUtil {
       .replaceAll("\\)", "")
       .split("\\|\\||&&");
 
-    System.out.println(Arrays.toString(rawConditions));
-
     List<Condition> conditions = Arrays.stream(rawConditions)
       .map(String::trim)
       .map(raw -> createSimpleCondition(raw, useGroup))
       .collect(Collectors.toList());
-
-    System.out.println(conditions);
 
     return new CompoundAndOrCondition(conditionString, conditions);
   }
