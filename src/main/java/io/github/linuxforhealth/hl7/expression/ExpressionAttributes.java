@@ -42,6 +42,7 @@ public class ExpressionAttributes {
     private final boolean isRequired;
     private final List<Specification> specs;
     private final List<Variable> variables;
+    private final String rawCondition;
     private final Condition condition; // filter is applies to the specs, spec values that pass the
     // condition
     // are used for evaluating the expression.
@@ -75,8 +76,10 @@ public class ExpressionAttributes {
 
         this.specs = getSpecList(exBuilder.rawSpecs, exBuilder.useGroup, this.generateMultiple);
         if (StringUtils.isNotBlank(exBuilder.rawCondition)) {
+            this.rawCondition = exBuilder.rawCondition;
             this.condition = ConditionUtil.createCondition(exBuilder.rawCondition, exBuilder.useGroup);
         } else {
+            this.rawCondition = null;
             this.condition = null;
         }
 
@@ -146,6 +149,10 @@ public class ExpressionAttributes {
 
     public Condition getFilter() {
         return condition;
+    }
+
+    public String getRawFilter() {
+        return rawCondition;
     }
 
     public Map<String, String> getConstants() {
