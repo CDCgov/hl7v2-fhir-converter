@@ -5,12 +5,15 @@
  */
 package io.github.linuxforhealth.core.expression.condition;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringTokenizer;
 import com.google.common.base.Preconditions;
 import io.github.linuxforhealth.api.Condition;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringTokenizer;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Utility class to create different conditions from string value.
@@ -74,7 +77,7 @@ public class ConditionUtil {
   private static CompoundAndCondition getListAndConditions(StringTokenizer ands, boolean useGroup) {
     List<Condition> conditions = new ArrayList<>();
     for (String tok : ands.getTokenList()) {
-      conditions.add(createSimpleCondition(tok, useGroup));
+      conditions.add();
     }
     return new CompoundAndCondition(conditions);
   }
@@ -88,16 +91,15 @@ public class ConditionUtil {
   }
 
   private static CompoundAndOrCondition createCompoundAndOrCondition(String conditionString, boolean useGroup) {
-    String strippedConditionString = conditionString
+    String[] rawConditions = conditionString
       .replaceAll("\\(", "")
-      .replaceAll("\\)", "");
-    StringTokenizer ors = new StringTokenizer(strippedConditionString, "||");
-    StringTokenizer ands = new StringTokenizer(strippedConditionString, "&&");
-    CompoundAndCondition andConditions = getListAndConditions(ors, useGroup);
-    CompoundORCondition orConditions = getListOrConditions(ors, useGroup);
-    List<Condition> conditions = new ArrayList<>();
-    conditions.addAll(andConditions.getConditions());
-    conditions.addAll(orConditions.getConditions());
+      .replaceAll("\\)", "")
+      .split("^(\\|\\||&&)$");
+
+    List<Condition> conditions = Arrays.stream(rawConditions)
+      .map(raw -> createSimpleCondition(raw, useGroup))
+      .collect(Collectors.toList());
+
     return new CompoundAndOrCondition(conditionString, conditions);
   }
 

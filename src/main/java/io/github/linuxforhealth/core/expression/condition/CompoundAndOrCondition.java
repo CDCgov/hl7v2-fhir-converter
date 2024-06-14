@@ -16,7 +16,7 @@ public class CompoundAndOrCondition implements Condition {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompoundAndOrCondition.class);
     private final String conditionStatement;
     private static final Pattern pattern = Pattern.compile("\\(.*?\\)");
-    private List<Condition> conditions;
+    private final List<Condition> conditions;
 
     /**
      * Constructor
