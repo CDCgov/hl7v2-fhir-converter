@@ -148,10 +148,6 @@ public class ExpressionAttributes {
         return condition;
     }
 
-    public String getRawFilter() {
-        return rawCondition;
-    }
-
     public Map<String, String> getConstants() {
         return ImmutableMap.copyOf(constants);
     }
