@@ -93,14 +93,12 @@ public class ConditionUtil {
   private static CompoundAndOrCondition createCompoundAndOrCondition(String conditionString, boolean useGroup) {
     // break it out into conditions (we don't care about the parenthesis and order-of-operations here)
     String[] rawConditions = conditionString
-      .replaceAll("\\(", "")
-      .replaceAll("\\)", "")
+      .replaceAll("[()]", "")
       .split("\\|\\||&&");
 
     // parse into Condition objects
     List<Condition> conditions = Arrays.stream(rawConditions)
-      .map(String::trim)
-      .map(raw -> createSimpleCondition(raw, useGroup))
+      .map(raw -> createSimpleCondition(raw.trim(), useGroup))
       .collect(Collectors.toList());
 
     // create new CompoundAndOrCondition with initial condition string and list of parsed conditions

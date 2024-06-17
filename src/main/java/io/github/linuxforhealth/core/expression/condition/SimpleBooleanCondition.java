@@ -29,8 +29,8 @@ public class SimpleBooleanCondition implements Condition {
 
     @Override
     public String toString() {
-        return "SimpleBooleanCondition{" +
+        return "SimpleBooleanCondition(" +
                 "conditionStatement='" + conditionStatement + '\'' +
-                '}';
+                ')';
     }
 }

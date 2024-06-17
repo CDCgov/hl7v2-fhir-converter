@@ -39,9 +39,9 @@ public class CheckNull implements Condition {
 
   @Override
   public String toString() {
-    return "CheckNull{" +
+    return "CheckNull(" +
             "var1='" + var1 + '\'' +
             ", useGroup=" + useGroup +
-            '}';
+            ')';
   }
 }

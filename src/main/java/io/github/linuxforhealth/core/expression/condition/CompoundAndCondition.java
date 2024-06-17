@@ -38,9 +38,9 @@ public class CompoundAndCondition implements Condition {
 
   @Override
   public String toString() {
-    return "CompoundAndCondition{" +
+    return "CompoundAndCondition(" +
             "conditions=" + conditions +
-            '}';
+            ')';
   }
 
 }

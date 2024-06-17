@@ -44,8 +44,8 @@ public class CompoundORCondition implements Condition {
 
   @Override
   public String toString() {
-    return "CompoundORCondition{" +
+    return "CompoundORCondition(" +
             "conditions=" + conditions +
-            '}';
+            ')';
   }
 }

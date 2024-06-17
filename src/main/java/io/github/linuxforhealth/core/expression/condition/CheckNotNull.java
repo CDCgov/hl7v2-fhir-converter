@@ -38,9 +38,9 @@ public class CheckNotNull implements Condition {
 
   @Override
   public String toString() {
-    return "CheckNotNull{" +
+    return "CheckNotNull(" +
             "var1='" + var1 + '\'' +
             ", useGroup=" + useGroup +
-            '}';
+            ')';
   }
 }

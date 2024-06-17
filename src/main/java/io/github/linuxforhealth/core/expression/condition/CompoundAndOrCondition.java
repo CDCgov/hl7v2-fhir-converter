@@ -144,8 +144,8 @@ public class CompoundAndOrCondition implements Condition {
 
     @Override
     public String toString() {
-        return "CompoundAndOrCondition{" +
+        return "CompoundAndOrCondition(" +
                 "conditionStatement='" + conditionStatement + '\'' +
-                '}';
+                ')';
     }
 }

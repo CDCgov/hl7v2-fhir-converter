@@ -102,10 +102,10 @@ public class SimpleBiCondition implements Condition {
 
   @Override
   public String toString() {
-    return "SimpleBiCondition{" +
+    return "SimpleBiCondition(" +
             "var1='" + var1 + '\'' +
             ", var2=" + var2 +
             ", conditionOperator='" + conditionOperator + '\'' +
-            '}';
+            ')';
   }
 }
