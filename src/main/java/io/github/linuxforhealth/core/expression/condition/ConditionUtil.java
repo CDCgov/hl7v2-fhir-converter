@@ -5,12 +5,15 @@
  */
 package io.github.linuxforhealth.core.expression.condition;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringTokenizer;
 import com.google.common.base.Preconditions;
 import io.github.linuxforhealth.api.Condition;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringTokenizer;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Utility class to create different conditions from string value.
@@ -32,7 +35,7 @@ public class ConditionUtil {
     StringTokenizer ors = new StringTokenizer(conditionString, "||");
     StringTokenizer ands = new StringTokenizer(conditionString, "&&");
     if(ors.getTokenList().size() > 1 && ands.getTokenList().size()> 1) {
-      return new CompoundAndOrCondition(conditionString);
+      return createCompoundAndOrCondition(conditionString, useGroup);
     } else if (ors.getTokenList().size() > 1) {
       return getListOrConditions(ors, useGroup);
     } else if (ands.getTokenList().size() > 1) {
@@ -85,6 +88,21 @@ public class ConditionUtil {
       conditions.add(createSimpleCondition(tok, useGroup));
     }
     return new CompoundORCondition(conditions);
+  }
+
+  private static CompoundAndOrCondition createCompoundAndOrCondition(String conditionString, boolean useGroup) {
+    // break it out into conditions (we don't care about the parenthesis and order-of-operations here)
+    String[] rawConditions = conditionString
+      .replaceAll("[()]", "")
+      .split("\\|\\||&&");
+
+    // parse into Condition objects
+    List<Condition> conditions = Arrays.stream(rawConditions)
+      .map(raw -> createSimpleCondition(raw.trim(), useGroup))
+      .collect(Collectors.toList());
+
+    // create new CompoundAndOrCondition with initial condition string and list of parsed conditions
+    return new CompoundAndOrCondition(conditionString, conditions);
   }
 
 }
