@@ -42,8 +42,10 @@ public class CompoundORCondition implements Condition {
     return new ArrayList<>(conditions);
   }
 
-
-
-
-
+  @Override
+  public String toString() {
+    return "CompoundORCondition(" +
+            "conditions=" + conditions +
+            ')';
+  }
 }

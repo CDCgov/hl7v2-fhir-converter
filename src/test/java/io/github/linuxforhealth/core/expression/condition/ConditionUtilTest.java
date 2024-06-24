@@ -75,4 +75,12 @@ class ConditionUtilTest {
         assertThat(simplecondition.getVar1()).isEqualTo("$var1");
     }
 
+    @Test
+    void multiple_and_or_condition() {
+        String condition = "$var1 NOT_NULL && ($var1 EQUALS xyz || $var2 EQUALS xyz)";
+        CompoundAndOrCondition simplecondition = (CompoundAndOrCondition) ConditionUtil.createCondition(condition);
+        assertThat(simplecondition).isNotNull();
+        assertThat(simplecondition.getConditions()).hasSize(3);
+    }
+
 }

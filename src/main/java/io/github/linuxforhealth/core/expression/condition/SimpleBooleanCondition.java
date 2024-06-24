@@ -26,4 +26,11 @@ public class SimpleBooleanCondition implements Condition {
     public boolean test(Map<String, EvaluationResult> contextVariables) {
         return Boolean.parseBoolean(conditionStatement);
     }
+
+    @Override
+    public String toString() {
+        return "SimpleBooleanCondition(" +
+                "conditionStatement='" + conditionStatement + '\'' +
+                ')';
+    }
 }

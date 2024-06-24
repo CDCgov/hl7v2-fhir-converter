@@ -16,14 +16,16 @@ public class CompoundAndOrCondition implements Condition {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompoundAndOrCondition.class);
     private final String conditionStatement;
     private static final Pattern pattern = Pattern.compile("\\(.*?\\)");
+    private final List<Condition> conditions;
 
     /**
      * Constructor
      * @param conditionStatement - the boolean expression to be evaluated.
      */
 
-    public CompoundAndOrCondition(String conditionStatement) {
+    public CompoundAndOrCondition(String conditionStatement, List<Condition> conditions) {
         this.conditionStatement = conditionStatement;
+        this.conditions = conditions;
     }
 
     /**
@@ -35,6 +37,10 @@ public class CompoundAndOrCondition implements Condition {
     @Override
     public boolean test(Map<String, EvaluationResult> contextVariables) {
         return Boolean.parseBoolean(makeRecursive(conditionStatement, contextVariables));
+    }
+
+    public List<Condition> getConditions() {
+        return this.conditions;
     }
 
     /**
@@ -134,5 +140,12 @@ public class CompoundAndOrCondition implements Condition {
             LOGGER.error("Could not access the constructor method for class " + conditionClass);
             return "false";
         }
+    }
+
+    @Override
+    public String toString() {
+        return "CompoundAndOrCondition(" +
+                "conditionStatement='" + conditionStatement + '\'' +
+                ')';
     }
 }
