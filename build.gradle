@@ -30,12 +30,12 @@ implementation group: 'commons-io', name: 'commons-io', version: '2.7'
 implementation 'ca.uhn.hapi:hapi-base:2.3'
 
 implementation 'ca.uhn.hapi:hapi-structures-v26:2.3'
-implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.1'
-implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.10.1'
+implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.0'
+implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.15.0'
 
 implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.15.0'
     
-api 'com.fasterxml.jackson.core:jackson-databind:2.13.4.2' 
+api 'com.fasterxml.jackson.core:jackson-databind:2.15.0' 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-text
 implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
     
