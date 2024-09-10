@@ -40,12 +40,19 @@ api 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
 implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
     
 // https://mvnrepository.com/artifact/ca.uhn.hapi.fhir/hapi-fhir-structures-r4
-implementation group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r4', version: '6.6.2'
-implementation group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r5', version: '6.6.2'
+implementation group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r4', version: '7.4.0'
+implementation group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r5', version: '7.4.0'
 // https://mvnrepository.com/artifact/ca.uhn.hapi.fhir/hapi-fhir-validation
-implementation group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-validation', version: '6.6.2'
+implementation group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-validation', version: '7.4.0'
 // https://mvnrepository.com/artifact/ca.uhn.hapi.fhir/hapi-fhir-validation-resources-r4
-implementation group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-validation-resources-r4', version: '6.6.2'
+implementation group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-validation-resources-r4', version: '7.4.0'
+// pin to remediate CVE-2024-45294
+implementation group: 'ca.uhn.hapi.fhir', name: 'org.hl7.fhir.utilities', version: '6.3.21'
+implementation group: 'ca.uhn.hapi.fhir', name: 'org.hl7.fhir.r5', version: '6.3.21'
+implementation group: 'ca.uhn.hapi.fhir', name: 'org.hl7.fhir.r4', version: '6.3.21'
+implementation group: 'ca.uhn.hapi.fhir', name: 'org.hl7.fhir.r4b', version: '6.3.21'
+implementation group: 'ca.uhn.hapi.fhir', name: 'org.hl7.fhir.dstu3', version: '6.3.21'
+implementation group: 'ca.uhn.hapi.fhir', name: 'org.hl7.fhir.dstu2016may', version: '6.3.21'
 
 // pin org.thymeleaf:thymeleaf@3.1.2.RELEASE for CVE-2023-38286
 implementation group: 'org.thymeleaf', name: 'thymeleaf', version: '3.1.2.RELEASE'
