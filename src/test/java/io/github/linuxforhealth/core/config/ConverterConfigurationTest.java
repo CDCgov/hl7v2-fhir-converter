@@ -90,12 +90,14 @@ class ConverterConfigurationTest {
 
     private void writeProperties(File configFile) throws FileNotFoundException, IOException {
         Properties prop = new Properties();
-        prop.put("base.path.resource", "src/main/resources");
-        prop.put("supported.hl7.messages", "ADT_A01, ORU_R01, PPR_PC1, VXU_V04");
-        prop.put("default.zoneid", "+08:00");
-        prop.put("additional.conceptmap.file", "src/test/resources/additional_conceptmap.yml");
-        prop.put("additional.resources.location", "src/test/resources/additional_resources");
-        prop.store(new FileOutputStream(configFile), null);
+        try (FileOutputStream fileOut = new FileOutputStream(configFile)) {
+            prop.put("base.path.resource", "src/main/resources");
+            prop.put("supported.hl7.messages", "ADT_A01, ORU_R01, PPR_PC1, VXU_V04");
+            prop.put("default.zoneid", "+08:00");
+            prop.put("additional.conceptmap.file", "src/test/resources/additional_conceptmap.yml");
+            prop.put("additional.resources.location", "src/test/resources/additional_resources");
+            prop.store(fileOut, null);
+        }
     }
  
     @Test
@@ -115,8 +117,10 @@ class ConverterConfigurationTest {
 
     private void writePropertiesDefaultMessages(File configFile) throws FileNotFoundException, IOException {
         Properties prop = new Properties();
-        prop.put("default.zoneid", "+08:00");
-        prop.store(new FileOutputStream(configFile), null);
+        try (FileOutputStream fileOut = new FileOutputStream(configFile)) {
+            prop.put("default.zoneid", "+08:00");
+            prop.store(fileOut, null);
+        }
     }
 
     /** Test will run 2nd due to alphabetical order, this order is important **/
