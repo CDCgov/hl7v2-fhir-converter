@@ -483,6 +483,31 @@ public class Hl7RelatedGeneralUtils {
         return String.format(divText, StringEscapeUtils.escapeHtml4(text).replace("~", "<br />"));
     }
 
+    public static Integer getDurationInMinutes(Integer duration, String unit) {
+        if (duration == null) {
+            return null;
+        }
+
+        if (unit == null) {
+            return duration / 60; // Convert seconds to minutes
+        }
+
+        switch (unit.toLowerCase().trim()) {
+            case "":
+            case "s":
+            case "sec":
+                return duration / 60; // Convert seconds to minutes
+            case "h":
+            case "hr":
+                return duration * 60; // Convert hours to minutes
+            case "d":
+            case "day":
+                return duration * 24 * 60; // Convert days to minutes
+            default:
+                return duration; // Assume already in minutes
+        }
+    }
+
     // Private method to split and format the 7 digit local telecom number
     private static String formatLocalNumber(String localNumber) {
         // Split after the 3rd digit, add a space, add the rest of the number

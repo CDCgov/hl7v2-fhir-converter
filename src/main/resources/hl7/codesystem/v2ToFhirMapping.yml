@@ -573,3 +573,16 @@ ContactPointUse:
   NET: home
   WPN: work
   PRS: mobile
+Appointmentstatus:
+  PROPOSED: proposed
+  PENDING: pending
+  WAITLIST: waitlist
+  BOOKED: booked
+  STARTED: checked-in
+  COMPLETE: fulfilled
+  CANCELLED: cancelled
+  DC: cancelled
+  DISCONTINUED: cancelled
+  DELETED: entered-in-error
+  OVERBOOK: booked
+  NOSHOW: noshow
