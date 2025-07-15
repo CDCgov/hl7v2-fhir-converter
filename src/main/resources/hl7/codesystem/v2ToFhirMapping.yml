@@ -586,3 +586,7 @@ Appointmentstatus:
   DELETED: entered-in-error
   OVERBOOK: booked
   NOSHOW: noshow
+AllergyIntoleranceSeverity:
+  MI: mild
+  MO: moderate
+  SV: severe

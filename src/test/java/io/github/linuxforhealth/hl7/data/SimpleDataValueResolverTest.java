@@ -458,4 +458,25 @@ class SimpleDataValueResolverTest {
                 break;
         }
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "MI", "MO", "SV"})
+    void testAllergyIntoleranceSeverity(String hl7Code) {
+        String severity = SimpleDataValueResolver.ALLERGY_INTOLERANCE_SEVERITY_CODE_FHIR.apply(hl7Code);
+        switch (hl7Code) {
+            case "MI":
+                assertThat(severity).isEqualTo("mild");
+                break;
+            case "MO":
+                assertThat(severity).isEqualTo("moderate");
+                break;
+            case "SV":
+                assertThat(severity).isEqualTo("severe");
+                break;
+            default:
+                assertThat(severity).isNull();
+                break;
+        }
+
+    }
 }

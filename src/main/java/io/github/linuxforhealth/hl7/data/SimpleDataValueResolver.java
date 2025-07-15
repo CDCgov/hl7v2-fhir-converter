@@ -35,6 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hl7.fhir.dstu3.model.codesystems.MedicationRequestCategory;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.AllergyIntolerance;
 import org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory;
 import org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCriticality;
 import org.hl7.fhir.r4.model.DiagnosticReport.DiagnosticReportStatus;
@@ -948,5 +949,10 @@ public class SimpleDataValueResolver {
             return getFHIRCode(Hl7DataHandlerUtil.getStringValue(xtn.getTelecommunicationUseCode()), ContactPointUse.class);
         }
         return null;
+    };
+
+    public static final ValueExtractor<Object, String> ALLERGY_INTOLERANCE_SEVERITY_CODE_FHIR = (Object value) -> {
+        String val = Hl7DataHandlerUtil.getStringValue(value);
+       return getFHIRCode(val, AllergyIntolerance.AllergyIntoleranceSeverity.class);
     };
 }

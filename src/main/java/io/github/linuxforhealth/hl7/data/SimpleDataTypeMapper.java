@@ -79,7 +79,8 @@ public enum SimpleDataTypeMapper {
   CLEAN_SSN(SimpleDataValueResolver.CLEAN_SSN),
   ENCOUNTER_MODE_ARRIVAL_DISPLAY(SimpleDataValueResolver.ENCOUNTER_MODE_ARRIVAL_DISPLAY),
   CONTACT_POINT_SYSTEM(SimpleDataValueResolver.CONTACT_POINT_SYSTEM),
-  CONTACT_POINT_USE(SimpleDataValueResolver.CONTACT_POINT_USE);
+  CONTACT_POINT_USE(SimpleDataValueResolver.CONTACT_POINT_USE),
+  ALLERGY_INTOLERANCE_SEVERITY(SimpleDataValueResolver.ALLERGY_INTOLERANCE_SEVERITY_CODE_FHIR);
 
   private ValueExtractor<Object, ?> valueResolver;
 
