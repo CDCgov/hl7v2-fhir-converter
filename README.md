@@ -10,12 +10,12 @@ Message parsing and modeling is supported using the "HAPI" libraries for [HL7](h
 - [Additional Documentation](#Additional-Documentation)
 - [Development Quickstart](#Development-Quickstart)
   * [Running Tests](#Running-Tests)
+  * [Local development gradle build switch (localDevEnv)](#Local-development-gradle-build-switch-localDevEnv)
 - [Using the Converter in a Java Application](#Using-the-Converter-in-a-Java-Application)
 - [Converter Configuration](#Converter-Configuration)
   * [HL7 Converter Configuration Property Location](#HL7-Converter-Configuration-Property-Location)
 - [Converter Runtime Parameters](#Converter-Runtime-Parameters)
 - [PHI (Protected Health Information)](#PHI-Protected-Health-Information)
-- [Local development gradle build switch (localDevEnv)](#Local-development-gradle-build-switch-(localDevEnv))
 
 ## Supported HL7 Messages and Segments
 
