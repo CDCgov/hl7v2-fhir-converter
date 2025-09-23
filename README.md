@@ -4,6 +4,21 @@ The LinuxForHealth HL7 to FHIR converter is a Java based library that enables co
 
 Message parsing and modeling is supported using the "HAPI" libraries for [HL7](https://hapifhir.github.io/hapi-hl7v2/) and [FHIR](https://hapifhir.io/) respectively.
 
+## Table of contents
+
+- [Supported HL7 Messages and Segments](#Supported-HL7-Messages-and-Segments)
+- [Additional Documentation](#Additional-Documentation)
+- [Development Quickstart](#Development-Quickstart)
+  * [Running Tests](#Running-Tests)
+  * [Local development gradle build switch (localDevEnv)](#Local-development-gradle-build-switch-localDevEnv)
+- [Using the Converter in a Java Application](#Using-the-Converter-in-a-Java-Application)
+- [Converter Configuration](#Converter-Configuration)
+  * [HL7 Converter Configuration Property Location](#HL7-Converter-Configuration-Property-Location)
+- [Converter Runtime Parameters](#Converter-Runtime-Parameters)
+- [PHI (Protected Health Information)](#PHI-Protected-Health-Information)
+
+## Supported HL7 Messages and Segments
+
 The converter supports the following message types/events:
 * ADT_A01 - Patient Administration: Admit/Visit Notification
 * ADT_A03 - Patient Administration: Discharge/End Visit  
@@ -81,6 +96,17 @@ cd hl7v2-fhir-converter
 ./gradlew build
 ```
 
+### Running Tests
+
+Tests are run as part of the `./gradlew build` command. For development, the command `./gradlew test` will also run the unit tests.
+Either of these actions will generate two relevant reports:
+- The test summary `hl7v2-fhir-converter/build/reports/tests/test/index.html`
+- The coverage summary `hl7v2-fhir-converter/build/jacocoHtml/index.html`
+
+### Local development gradle build switch (localDevEnv)
+
+Before the gradle build step, where the compile happens, the gradle build copies the _src_ directory to the _target_ directoy and sets the gradle build sourcesets to the target directory. Then it strips out all LOGGER.debug statements. This means the compile/build runs off the target directory where the debug statements have been stripped. However if you are running locally you still want the build to run off the _src_ directory or otherwise you must build after each change to get it copied to the _target_ directory. There is a flag in the gradle.properties named _localDevEnv_ which should always be set to false in GIT but a developer can override this flag to true and the local build will keep the sourcesets tied to the _src_ directory.
+
 ## Using the Converter in a Java Application
 
 The HL7 to FHIR converter library is available as a maven dependency. 
@@ -112,7 +138,7 @@ Instantiate and execute the converter
     String output= ftv.convert(hl7message); // generated a FHIR output
 ```
 
-## Converter Configuration:
+## Converter Configuration
 
 The converter configuration file, config.properties, supports the following settings
  
@@ -145,13 +171,9 @@ The converter allows passing of certain parameters at run time through the optio
 | Property (Key/Value)  | A string property expressed as a key / value pair.  Properties become available as variables to the templates.  A property `TENANT` with value `myTenantId` is utilized in templates as `$TENANT`.             | options.withProperty("TENANT","myTenantId")      |
 
 
-### PHI (Protected Health Information)
+## PHI (Protected Health Information)
 
 Since this converter is used in production environments using real patient data it can not log or print out anything that may contain PHI data. We will be stripping out all debug log statements as part of the build. This allows developers to use these debug statements to debug issues with santized unit test data.
 
 * Please do not add any print outs (ie system.out.println etc). Use the logger.
 * When adding / editing current or future error, warn, and info log statements please be careful to not add any data structures that might contain PHI. If you aren't sure then make the log statement debug so it's stripped out.
-
-### Local development gradle build switch (localDevEnv)
-
-Before the gradle build step where the compile happens the gradle build copies the _src_ directory to the _target_ directoy and sets the gradle build sourcesets to the target directory. Then it strips out all LOGGER.debug statements. This means the compile/build runs off the target directory where the debug statements have been stripped. However if you are running locally you still want the build to run off the _src_ directory or otherwise you must build after each change to get it copied to the _target_ directory. There is a flag in the gradle.properties named _localDevEnv_ which should always be set to false in GIT but a developer can override this flag to true and the local build will keep the sourcesets tied to the _src_ directory.
