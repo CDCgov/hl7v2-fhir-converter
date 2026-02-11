@@ -35,6 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hl7.fhir.dstu3.model.codesystems.MedicationRequestCategory;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.AllergyIntolerance;
 import org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory;
 import org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCriticality;
 import org.hl7.fhir.r4.model.DiagnosticReport.DiagnosticReportStatus;
@@ -44,6 +45,7 @@ import org.hl7.fhir.r4.model.Observation.ObservationStatus;
 import org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus;
 import org.hl7.fhir.r4.model.Specimen.SpecimenStatus;
 
+import org.hl7.fhir.r4.model.codesystems.Appointmentstatus;
 import org.hl7.fhir.r4.model.codesystems.V3ActCode;
 import org.hl7.fhir.r4.model.codesystems.V3MaritalStatus;
 import org.hl7.fhir.r4.model.codesystems.ConditionCategory;
@@ -207,6 +209,12 @@ public class SimpleDataValueResolver {
     public static final ValueExtractor<Object, String> OBSERVATION_STATUS_CODE_FHIR = (Object value) -> {
         String val = Hl7DataHandlerUtil.getStringValue(value);
         return getFHIRCode(val, ObservationStatus.class);
+    };
+
+
+    public static final ValueExtractor<Object, String> APPOINTMENT_STATUS_CODE_FHIR = (Object value) -> {
+        String val = Hl7DataHandlerUtil.getStringValue(value);
+        return getFHIRCode(val, Appointmentstatus.class);
     };
 
     // Handlers for searching Immunization.education siblings.
@@ -941,5 +949,10 @@ public class SimpleDataValueResolver {
             return getFHIRCode(Hl7DataHandlerUtil.getStringValue(xtn.getTelecommunicationUseCode()), ContactPointUse.class);
         }
         return null;
+    };
+
+    public static final ValueExtractor<Object, String> ALLERGY_INTOLERANCE_SEVERITY_CODE_FHIR = (Object value) -> {
+        String val = Hl7DataHandlerUtil.getStringValue(value);
+       return getFHIRCode(val, AllergyIntolerance.AllergyIntoleranceSeverity.class);
     };
 }
