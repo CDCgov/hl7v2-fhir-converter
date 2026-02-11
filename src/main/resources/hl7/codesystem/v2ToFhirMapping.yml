@@ -17,10 +17,14 @@ AllergyIntoleranceCriticality:
    U: unable-to-assess
 ObservationStatus:
    C: corrected
-   D: cancelled
+   D: entered-in-error
    F: final
-   I: registered
+   I: preliminary
    P: preliminary
+   R: registered
+   S: preliminary
+   X: cancelled
+   U: final
    W: entered-in-error
 
 ServiceRequestStatus:

@@ -163,7 +163,7 @@ class SimpleDataValueResolverTest {
     void get_observation_status_value_valid() {
         String gen = "d";
         assertThat(SimpleDataValueResolver.OBSERVATION_STATUS_CODE_FHIR.apply(gen))
-                .isEqualTo(ObservationStatus.CANCELLED.toCode());
+                .isEqualTo(ObservationStatus.ENTEREDINERROR.toCode());
     }
 
     @Test
