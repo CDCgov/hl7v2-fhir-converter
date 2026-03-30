@@ -63,7 +63,6 @@ import org.hl7.fhir.r4.model.codesystems.ContactPointSystem;
 import org.hl7.fhir.r4.model.codesystems.ContactPointUse;
 import org.hl7.fhir.r4.model.codesystems.EncounterStatus;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
